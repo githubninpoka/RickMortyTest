@@ -4,17 +4,17 @@ namespace RickMorty.ExternalData.DTOs;
 
 // Root myDeserializedClass = JsonSerializer.Deserialize<Root>(myJsonResponse);
 
-public class Root
+public class RickMortyApiPageRootDTO
 {
     [JsonPropertyName("info")]
     public Info Info { get; set; }
 
     [JsonPropertyName("results")]
-    public List<Result> Results { get; set; }
+    public List<CharacterDTO> Results { get; set; }
 
-    public Root()
+    public RickMortyApiPageRootDTO()
     {
-        Results = new List<Result>();
+        Results = new List<CharacterDTO>();
         Info = new Info();
     }
 }

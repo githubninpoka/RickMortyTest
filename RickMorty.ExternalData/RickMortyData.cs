@@ -14,9 +14,9 @@ namespace RickMorty.ExternalData;
 public class RickMortyData
 {
     private IWebApiReader webApiReader;
-    
-    List<Result> externalRickMortyData = new(); // have to initialize the List<Result>, because otherwise I can't iterate and call
-                                        // .Add on a non-existent List<Result> I knew this.
+
+    List<CharacterDTO> externalRickMortyData = new(); // have to initialize the List<Result>, because otherwise I can't iterate and call
+                                                      // .Add on a non-existent List<Result> I knew this.
     public RickMortyData(IWebApiReader webApiReader)
     {
         this.webApiReader = webApiReader;
@@ -26,14 +26,14 @@ public class RickMortyData
         int totalNumberOfPages = 10;
         int currentlyRequestedPage = 1;
 
-        List<Task<Root>> tasks = new();
+        List<Task<RickMortyApiPageRootDTO>> tasks = new();
 
         //var containsTotalNumberOfPages = await ReturnOnePageOfExternalRickMortyCharactersInARoot_Async(1);
         //totalNumberOfPages = containsTotalNumberOfPages.Info.Pages;
 
         while (currentlyRequestedPage <= totalNumberOfPages)
         {
-            // will only help prevent throttling once I've got multithreading working correctly
+            // will help prevent throttling while multithreading
             await SlowDownWhenTooManySimultenousTasks(tasks);
 
             Console.WriteLine($"Calling the method with argument {currentlyRequestedPage}");
@@ -63,17 +63,23 @@ public class RickMortyData
             int numberOfCharactersInThisPage = tasks[i].Result.Results.Count();
             for (int j = 0; j < numberOfCharactersInThisPage; j++)
             {
-                Result currentCharacter = tasks[i].Result.Results[j];
+                CharacterDTO currentCharacter = tasks[i].Result.Results[j];
                 //externalRickMortyData.Results.Add(currentCharacter);
-                Console.WriteLine($"The current character is: {currentCharacter.Name} with status {currentCharacter.Status}");
+                Console.WriteLine($"The current character is: {currentCharacter.ExternalCharacterId} {currentCharacter.Name} with status {currentCharacter.Status}");
             }
+        }
+        Console.WriteLine("================================================================");
+        var alives = externalRickMortyData.Where(character => character.Status.ToLower() == "alive");
+        foreach (var alive in alives)
+        {
+            Console.WriteLine($"The current character is: {alive.ExternalCharacterId} {alive.Name} with status {alive.Status}");
         }
 
         Console.ReadLine();
     }
 
 
-    public async Task<Root> ReturnOnePageOfExternalRickMortyCharactersInARoot_Async(int pageNumber)
+    public async Task<RickMortyApiPageRootDTO> ReturnOnePageOfExternalRickMortyCharactersInARoot_Async(int pageNumber)
     {
         string requestParameter = $"?page={pageNumber}";
         Console.WriteLine($"Calling the api with {requestParameter} from thread with id: {Thread.CurrentThread.ManagedThreadId}");
@@ -84,22 +90,22 @@ public class RickMortyData
             );
 
         // could I deserialize a string asynchronously? I don't have a 'stream'
-        return JsonSerializer.Deserialize<Root>(data);
+        return JsonSerializer.Deserialize<RickMortyApiPageRootDTO>(data);
     }
 
-    private async Task SlowDownWhenTooManySimultenousTasks(List<Task<Root>> tasks)
+    private async Task SlowDownWhenTooManySimultenousTasks(List<Task<RickMortyApiPageRootDTO>> tasks)
     {
         // there are probably better ways to limit the amount of simultaneous threads,
         // but hey, this works without relying on just the threadpool
         int maxConcurrentRunningRequests = 3;
-        
-        Console.WriteLine($"Tasks running: {tasks.Count(task=> task.Status == TaskStatus.Running)}");
+
+        Console.WriteLine($"Tasks running: {tasks.Count(task => task.Status == TaskStatus.Running)}");
         Console.WriteLine($"Tasks waiting for activation: {tasks.Count(task => task.Status == TaskStatus.WaitingForActivation)}");
         Console.WriteLine($"Tasks waiting to run: {tasks.Count(task => task.Status == TaskStatus.WaitingToRun)}");
         Console.WriteLine($"Tasks created: {tasks.Count(task => task.Status == TaskStatus.Created)}");
         while (tasks.Count(
-            task => task.Status == TaskStatus.Running 
-        || task.Status == TaskStatus.WaitingForActivation 
+            task => task.Status == TaskStatus.Running
+        || task.Status == TaskStatus.WaitingForActivation
         || task.Status == TaskStatus.Created
         ) > maxConcurrentRunningRequests)
         {

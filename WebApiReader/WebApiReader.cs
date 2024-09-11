@@ -27,4 +27,9 @@ public class WebApiReader : IWebApiReader
 
         return await response.Content.ReadAsStringAsync();        
     }
+
+    public void Dispose()
+    {
+
+    }
 }
