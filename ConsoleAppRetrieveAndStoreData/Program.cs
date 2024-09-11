@@ -1,32 +1,36 @@
 ﻿using RickMorty.ExternalData;
-using RickMorty.ExternalData.Constants;
 using MyWebApiNamespace;
-using RickMorty.Data.Models;
+using RickMorty.Domain.Models;
 using RickMorty.ExternalData.DTOs;
+using Microsoft.EntityFrameworkCore;
+using RickMorty.Data;
 
-namespace ConsoleApp1;
+
+namespace RickMorty.ConsoleAppRetrieveAndStoreData;
 
 internal class Program
 {
     
     static async Task Main(string[] args)
     {
+        DbContext db = new RickMortyDbContext();
+
         IWebApiReader webApiReader = new WebApiReader();
         RickMortyData rickMortyData = new RickMortyData(webApiReader);
         Task<IEnumerable<CharacterDTO>> aliveCharacterDTOsTask = rickMortyData.CreateFullRickMortyCharacterDataAsync();
 
-
-
-        //Console.WriteLine();
         //do
         //{
         //    Console.WriteLine("Doing some main work while waiting for DTOs to load");
         //    await Task.Delay(500);
         //} while (aliveCharacterDTOsTask.Status == TaskStatus.Running);
-
         IEnumerable<CharacterDTO> aliveCharacterDTOs = aliveCharacterDTOsTask.Result;
 
         List<Character> characters= CreateCharacters(aliveCharacterDTOs);
+
+        db.Database.ExecuteSqlRaw("TRUNCATE TABLE[Characters]");
+        db.AddRangeAsync(characters);
+        db.SaveChanges();
 
         Console.ReadLine();
     }

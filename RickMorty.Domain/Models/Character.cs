@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 
 
-namespace RickMorty.Data.Models;
+namespace RickMorty.Domain.Models;
 
 public class Character
 {
     public int Id { get; set; }
     public DateTime Created { get; set; }
+
     public string Name { get; set; }
     public string Status { get; set; }
     public string Species { get; set; }
@@ -20,6 +21,8 @@ public class Character
 
     public int ExternalId { get; set; }
     public DateTime externalCreated { get; set; }
+
+
 
     public static explicit operator Character(RickMorty.ExternalData.DTOs.CharacterDTO characterDTO)
     {

@@ -24,20 +24,20 @@ public class RickMortyData
     }
     public async Task<IEnumerable<CharacterDTO>> CreateFullRickMortyCharacterDataAsync()
     {
-        int totalNumberOfPages = 10;
+        int totalNumberOfPages = 3;
         int currentlyRequestedPage = 1;
 
         List<Task<RickMortyApiPageRootDTO>> tasks = new();
 
-        //var containsTotalNumberOfPages = await ReturnOnePageOfExternalRickMortyCharactersInARoot_Async(1);
-        //totalNumberOfPages = containsTotalNumberOfPages.Info.Pages;
+        var containsTotalNumberOfPages = await ReturnOnePageOfExternalRickMortyCharactersInARoot_Async(1);
+        totalNumberOfPages = containsTotalNumberOfPages.Info.Pages;
 
         while (currentlyRequestedPage <= totalNumberOfPages)
         {
             // will help prevent throttling while multithreading
             await SlowDownWhenTooManySimultenousTasks(tasks);
 
-            Console.WriteLine($"Calling the method with argument {currentlyRequestedPage}");
+            //Console.WriteLine($"Calling the method with argument {currentlyRequestedPage}");
             //tasks.Add(ReturnOnePageOfExternalRickMortyCharactersInARoot_Async(currentlyRequestedPage)); // this runs synchronously....
             // https://stackoverflow.com/questions/30225476/task-run-with-parameters
             // answer 10, remark 6! => declare a local variable so that each task has its own nonchanging variable.
@@ -45,7 +45,7 @@ public class RickMortyData
             // multiple calls with gaps and overlapping pages.
             var thisPage = currentlyRequestedPage;
             tasks.Add(Task.Run(() => ReturnOnePageOfExternalRickMortyCharactersInARoot_Async(thisPage))); // and this fucks with the argument
-            Console.WriteLine($"Called the method with argument {currentlyRequestedPage}");
+            //Console.WriteLine($"Called the method with argument {currentlyRequestedPage}");
             currentlyRequestedPage++;
         }
         Console.WriteLine();
@@ -82,7 +82,7 @@ public class RickMortyData
     public async Task<RickMortyApiPageRootDTO> ReturnOnePageOfExternalRickMortyCharactersInARoot_Async(int pageNumber)
     {
         string requestParameter = $"?page={pageNumber}";
-        Console.WriteLine($"Calling the api with {requestParameter} from thread with id: {Thread.CurrentThread.ManagedThreadId}");
+        //Console.WriteLine($"Calling the api with {requestParameter} from thread with id: {Thread.CurrentThread.ManagedThreadId}");
         string data = await webApiReader.ReadStringAsync(
             RickMortyConstants.BASEURI,
             RickMortyConstants.RELATIVEURL,
@@ -99,17 +99,17 @@ public class RickMortyData
         // but hey, this works without relying on just the threadpool
         int maxConcurrentRunningRequests = 3;
 
-        Console.WriteLine($"Tasks running: {tasks.Count(task => task.Status == TaskStatus.Running)}");
-        Console.WriteLine($"Tasks waiting for activation: {tasks.Count(task => task.Status == TaskStatus.WaitingForActivation)}");
-        Console.WriteLine($"Tasks waiting to run: {tasks.Count(task => task.Status == TaskStatus.WaitingToRun)}");
-        Console.WriteLine($"Tasks created: {tasks.Count(task => task.Status == TaskStatus.Created)}");
+        //Console.WriteLine($"Tasks running: {tasks.Count(task => task.Status == TaskStatus.Running)}");
+        //Console.WriteLine($"Tasks waiting for activation: {tasks.Count(task => task.Status == TaskStatus.WaitingForActivation)}");
+        //Console.WriteLine($"Tasks waiting to run: {tasks.Count(task => task.Status == TaskStatus.WaitingToRun)}");
+        //Console.WriteLine($"Tasks created: {tasks.Count(task => task.Status == TaskStatus.Created)}");
         while (tasks.Count(
             task => task.Status == TaskStatus.Running
         || task.Status == TaskStatus.WaitingForActivation
         || task.Status == TaskStatus.Created
         ) > maxConcurrentRunningRequests)
         {
-            Console.WriteLine("Throttling...");
+            //Console.WriteLine("Throttling...");
             await Task.Delay(500);
         }
     }

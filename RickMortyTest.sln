@@ -5,11 +5,13 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RickMorty.ExternalData", "RickMorty.ExternalData\RickMorty.ExternalData.csproj", "{16C76D01-8B3E-43C7-96D9-298B4F91B327}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{E73441FD-D2F1-4E6E-8A10-A4FE804EE06A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppRetrieveAndStoreData", "ConsoleAppRetrieveAndStoreData\ConsoleAppRetrieveAndStoreData.csproj", "{E73441FD-D2F1-4E6E-8A10-A4FE804EE06A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiReader", "WebApiReader\WebApiReader.csproj", "{3313A947-A750-4512-B4D4-BD8B76FB8700}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RickMorty.Data", "RickMorty.Data\RickMorty.Data.csproj", "{AF89A678-A655-4E99-9717-F268B0D6C42C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RickMorty.Domain", "RickMorty.Domain\RickMorty.Domain.csproj", "{AF89A678-A655-4E99-9717-F268B0D6C42C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RickMorty.Data", "RickMorty.Data\RickMorty.Data.csproj", "{71624561-16EB-4986-A4CE-A7274719D83C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{AF89A678-A655-4E99-9717-F268B0D6C42C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF89A678-A655-4E99-9717-F268B0D6C42C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF89A678-A655-4E99-9717-F268B0D6C42C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71624561-16EB-4986-A4CE-A7274719D83C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71624561-16EB-4986-A4CE-A7274719D83C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71624561-16EB-4986-A4CE-A7274719D83C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71624561-16EB-4986-A4CE-A7274719D83C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
