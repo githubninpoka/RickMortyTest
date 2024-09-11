@@ -5,7 +5,7 @@ namespace RickMorty.ExternalData.DTOs;
 public class CharacterDTO
 {
     [JsonPropertyName("id")]
-    public int ExternalCharacterId { get; set; }
+    public int Id { get; set; }
 
     [JsonPropertyName("name")]
     public string Name { get; set; }

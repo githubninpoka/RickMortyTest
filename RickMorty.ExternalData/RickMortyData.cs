@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using MyWebApiNamespace;
 using System.Text.Json;
-using RickMorty.ExternalData.DTOs;
 using System.Xml;
+using RickMorty.ExternalData.DTOs;
+
 
 namespace RickMorty.ExternalData;
 
@@ -21,7 +22,7 @@ public class RickMortyData
     {
         this.webApiReader = webApiReader;
     }
-    public async Task CreateFullRickMortyCharacterDataAsync()
+    public async Task<IEnumerable<CharacterDTO>> CreateFullRickMortyCharacterDataAsync()
     {
         int totalNumberOfPages = 10;
         int currentlyRequestedPage = 1;
@@ -51,31 +52,30 @@ public class RickMortyData
 
         //Task.WaitAll(tasks.ToArray()); // this is probably blocking main thread
         await Task.WhenAll(tasks);
-        Console.WriteLine("Continue onto displaying?");
+        //Console.WriteLine("Continue onto displaying?");
         //Console.ReadLine();
 
         for (int i = 0; i < totalNumberOfPages; i++)
         {
             externalRickMortyData.AddRange(tasks[i].Result.Results);
-            Console.WriteLine(new string('-', 40));
-            Console.WriteLine($"Will now start with index {i}");
-            Console.WriteLine($"Next page is: {tasks[i].Result.Info.Next}");
+            //Console.WriteLine(new string('-', 40));
+            //Console.WriteLine($"Will now start with index {i}");
+            //Console.WriteLine($"Next page is: {tasks[i].Result.Info.Next}");
             int numberOfCharactersInThisPage = tasks[i].Result.Results.Count();
             for (int j = 0; j < numberOfCharactersInThisPage; j++)
             {
                 CharacterDTO currentCharacter = tasks[i].Result.Results[j];
                 //externalRickMortyData.Results.Add(currentCharacter);
-                Console.WriteLine($"The current character is: {currentCharacter.ExternalCharacterId} {currentCharacter.Name} with status {currentCharacter.Status}");
+               // Console.WriteLine($"The current character is: {currentCharacter.Id} {currentCharacter.Name} with status {currentCharacter.Status}");
             }
         }
-        Console.WriteLine("================================================================");
-        var alives = externalRickMortyData.Where(character => character.Status.ToLower() == "alive");
-        foreach (var alive in alives)
-        {
-            Console.WriteLine($"The current character is: {alive.ExternalCharacterId} {alive.Name} with status {alive.Status}");
-        }
-
-        Console.ReadLine();
+        //Console.WriteLine("================================================================");
+        IEnumerable<CharacterDTO> aliveCharacterDTOs = externalRickMortyData.Where(character => character.Status.ToLower() == "alive");
+        //foreach (var alive in aliveCharacterDTOs)
+        //{
+        //    Console.WriteLine($"The current character is: {alive.Id} {alive.Name} with status {alive.Status}");
+        //}
+        return aliveCharacterDTOs;
     }
 
 
