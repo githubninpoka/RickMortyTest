@@ -1,6 +1,8 @@
+![readme](https://github.com/user-attachments/assets/56b4c9d4-749d-41df-97ff-dd023a3090dc)
+
 Rick & Morty exercise:
 
-ToDo:
+Still ToDo For the exercise:
 - a caching mechanisme for the MVC -> I could use some pointers please
 - the header from-database -> I could use some pointers please
 - a unit test project with a test -> I've only touched upon unit testing a bit so I can't really progress here
@@ -31,4 +33,7 @@ What I am not happy about:
 - some methods need refactoring but since it's a learning project I left the clumsyness in.
 - i got most of the functionality up and running but most of the code isn't really safe yet. it needs try/catch etc.
 - i'm not keen on the way i've added the dbcontext, but at least i could reuse it for both the console and the mvc app
+- i'm thinking it's probably better to have one http helper class and let that:
+	- fetch the external data
+	- CRUD the internal data (so not let the MVC app interact with the DbContext directly but through a to-be-built Web API)
 
