@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RickMorty.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,17 @@ public class RickMortyDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(Properties.Resources.RickMortyConnectString);
-
         base.OnConfiguring(optionsBuilder);
 
+        optionsBuilder.UseSqlServer(Properties.Resources.RickMortyConnectString)
+            .LogTo(Console.WriteLine, LogLevel.Information);
+        optionsBuilder.EnableSensitiveDataLogging();
+
+
+    }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
     }
 
 }

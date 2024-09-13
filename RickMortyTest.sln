@@ -11,7 +11,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiReader", "WebApiReade
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RickMorty.Domain", "RickMorty.Domain\RickMorty.Domain.csproj", "{AF89A678-A655-4E99-9717-F268B0D6C42C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RickMorty.Data", "RickMorty.Data\RickMorty.Data.csproj", "{71624561-16EB-4986-A4CE-A7274719D83C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RickMorty.Data", "RickMorty.Data\RickMorty.Data.csproj", "{71624561-16EB-4986-A4CE-A7274719D83C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RickMortyMVC", "RickMortyMVC\RickMortyMVC.csproj", "{FE520E9F-5A70-4416-9489-2B72D3E546DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{206C8825-80B5-4E80-A3E7-89B389C1BAC1}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +46,10 @@ Global
 		{71624561-16EB-4986-A4CE-A7274719D83C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71624561-16EB-4986-A4CE-A7274719D83C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71624561-16EB-4986-A4CE-A7274719D83C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE520E9F-5A70-4416-9489-2B72D3E546DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE520E9F-5A70-4416-9489-2B72D3E546DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE520E9F-5A70-4416-9489-2B72D3E546DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE520E9F-5A70-4416-9489-2B72D3E546DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

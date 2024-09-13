@@ -24,7 +24,7 @@ public class RickMortyData
     }
     public async Task<IEnumerable<CharacterDTO>> CreateFullRickMortyCharacterDataAsync()
     {
-        int totalNumberOfPages = 3;
+        int totalNumberOfPages = 2;
         int currentlyRequestedPage = 1;
 
         List<Task<RickMortyApiPageRootDTO>> tasks = new();
