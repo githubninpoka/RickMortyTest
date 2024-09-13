@@ -1,3 +1,5 @@
+![readme](https://github.com/user-attachments/assets/56b4c9d4-749d-41df-97ff-dd023a3090dc)
+
 Rick & Morty exercise:
 
 ToDo:
