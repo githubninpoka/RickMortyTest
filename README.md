@@ -1,5 +1,10 @@
 Rick & Morty exercise:
 
+ToDo:
+- a caching mechanisme for the MVC -> I could use some pointers please
+- the header from-database -> I could use some pointers please
+- a unit test project with a test -> I've only touched upon unit testing a bit so I can't really progress here
+
 Done:
 - create a supporting WebApiReader project. I followed a tutorial [Udemy course by a Krystyna - 9/288]
 - create a separate project for storing the DTOs and fetching the data into a collection [Krystyna - 9/291 etc]
@@ -9,10 +14,6 @@ Done:
 - add EF and delete/store the data when the console program runs [Trevoir .Net - 3/11 etc]
 - added a simple MVC app with scaffolding. [freewheeled loosely related to a course Trevoir .Net - 9/100]
 - added an action/view for selected planet [Frank Liu's course on MVC ]
-
-ToDo: a caching mechanisme for the MVC -> I could use some pointers
-ToDo: the header from-database -> I could use some pointers
-ToDo: a unit test project with a test -> I've only touched upon unit testing a bit so I can't really progress here
 
 What I learnt:
 - projects cannot cyclically reference eachother (it needed to click in my head)
