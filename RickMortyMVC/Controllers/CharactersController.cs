@@ -20,12 +20,16 @@ namespace RickMortyMVC.Controllers
         }
 
         // GET: Characters
+        // added to try caching
+        //[ResponseCache(Duration = 30, Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client, NoStore = false)]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Characters.ToListAsync());
         }
 
         // Marco GET: Characters/Location/Earth
+        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client, NoStore = false)]
         public async Task<IActionResult> Planet(string? id)
         {
             // here I would probably ask someone if this is safe url wise
