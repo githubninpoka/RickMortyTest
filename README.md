@@ -3,8 +3,6 @@
 Rick & Morty exercise:
 
 Still ToDo For the exercise:
-- a caching mechanisme for the MVC -> I could use some pointers please
-- the header from-database -> I could use some pointers please
 - a unit test project with a test -> I've only touched upon unit testing a bit so I can't really progress here
 
 Done:
@@ -16,6 +14,9 @@ Done:
 - add EF and delete/store the data when the console program runs [Trevoir .Net - 3/11 etc]
 - added a simple MVC app with scaffolding. [freewheeled loosely related to a course Trevoir .Net - 9/100]
 - added an action/view for selected planet [Frank Liu's course on MVC ]
+- implement OutputCache & refresh the cache on certain actions
+- injecting a HTTP header from-database that is set when an action runs;
+- I used filters to keep MVC mostly for what it's for: UI
 
 What I learnt:
 - projects cannot cyclically reference eachother (it needed to click in my head)
@@ -27,6 +28,9 @@ What I learnt:
 - if you have the DbContext setup in a separate project, adding a MVC app with scaffolding becomes trivial (in .Net 8)
 - with the courses that I already did, adding an action/view for selected planet took me 15 minutes. that's reassuring.
 - adding multiple startup projects works but I see that the MVC will load its first view before the table in database is purged and reloaded by the console project.
+- working better with the filter system in MVC, injecting headers through filters
+- using dependency injection in filters
+- the standard microsoft documentation is extremely cryptic sometimes
 
 What I am not happy about:
 - it looks clumsy with all those projects but maybe that's okay

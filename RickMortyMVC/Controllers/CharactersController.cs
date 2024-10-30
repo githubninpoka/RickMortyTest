@@ -1,35 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using RickMorty.Data;
 using RickMorty.Domain.Models;
+using RickMortyMVC.Filters;
 
 namespace RickMortyMVC.Controllers
 {
     public class CharactersController : Controller
     {
         private readonly RickMortyDbContext _context;
+        private readonly IOutputCacheStore _outputCacheStore;
 
-        public CharactersController(RickMortyDbContext context)
+        public CharactersController(RickMortyDbContext context, IOutputCacheStore outputCacheStore)
         {
             _context = context;
+            _outputCacheStore = outputCacheStore;
         }
 
         // GET: Characters
-        // added to try caching
-        //[ResponseCache(Duration = 30, Location = ResponseCacheLocation.None, NoStore = true)]
-        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client, NoStore = false)]
+        // Marco added caching
+        // [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client, NoStore = false)] 
+        // I think outputcaching is more appropriate for this.
+        [OutputCache(PolicyName = "Expire300")]
+        //[TypeFilter(typeof(IndexResourceFilterAttribute))] // this filter is ran before the action filters and after the response filters
+        //[IndexPreActionFilter("from-database", "false")] // this is ran just around the action itself.
+        [IndexResponseFilter("from-database", "true")]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Characters.ToListAsync());
+            var etag = $"\"{Guid.NewGuid():n}\"";
+            HttpContext.Response.Headers.ETag = etag; // this sends the client a HTTP 304
+            return View(await _context.Characters.OrderByDescending(x => x.Id).ToListAsync());
         }
 
         // Marco GET: Characters/Location/Earth
-        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client, NoStore = false)]
+        //[ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client, NoStore = false)]
         public async Task<IActionResult> Planet(string? id)
         {
             // here I would probably ask someone if this is safe url wise
@@ -66,12 +78,16 @@ namespace RickMortyMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [TypeFilter(typeof(CreatePostInvalidateIndexCacheFilterAttribute))]
         public async Task<IActionResult> Create([Bind("Id,Created,Name,Status,Species,Origin,Location,ExternalId,externalCreated")] Character character)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(character);
                 await _context.SaveChangesAsync();
+
+                //await _outputCacheStore.EvictByTagAsync("TagHandleForExpire300Policy", new CancellationToken()); // I left this here, but moved it to a filter.
+
                 return RedirectToAction(nameof(Index));
             }
             return View(character);
@@ -149,6 +165,7 @@ namespace RickMortyMVC.Controllers
         // POST: Characters/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [TypeFilter(typeof(CreatePostInvalidateIndexCacheFilterAttribute))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var character = await _context.Characters.FindAsync(id);
@@ -156,8 +173,8 @@ namespace RickMortyMVC.Controllers
             {
                 _context.Characters.Remove(character);
             }
-
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

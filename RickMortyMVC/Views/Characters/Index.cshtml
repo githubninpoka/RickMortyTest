@@ -1,11 +1,14 @@
 ﻿@model IEnumerable<RickMorty.Domain.Models.Character>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Characters";
 }
 
-<h1>Index</h1>
-
+<h1>Alive characters in Rick & Morty</h1>
+<p>It is now @DateTime.Now <br />
+Posting the Create or Delete action will both flush the output cache that is set to 300 seconds.<br />
+There is a from-database header that is set in an actionfilter when a fetch from the database is performed.<br />
+Otherwise the client will get a HTTP 304 code.</p>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
