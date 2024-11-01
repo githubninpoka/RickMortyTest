@@ -14,8 +14,9 @@ Done:
 - add EF and delete/store the data when the console program runs [Trevoir .Net - 3/11 etc]
 - added a simple MVC app with scaffolding. [freewheeled loosely related to a course Trevoir .Net - 9/100]
 - added an action/view for selected planet [Frank Liu's course on MVC ]
-- implement OutputCache & refresh the cache on certain actions
-- injecting a HTTP header from-database that is set when an action runs;
+- implement OutputCache & refresh (evict) the tagged cache on certain actions
+- set locking when building cache to avoid cache stampede
+- injecting a HTTP header from-database that is set when an action runs
 - I used filters to keep MVC mostly for what it's for: UI
 
 What I learnt:
@@ -31,6 +32,7 @@ What I learnt:
 - working better with the filter system in MVC, injecting headers through filters
 - using dependency injection in filters
 - the standard microsoft documentation is extremely cryptic sometimes
+- how to have an action filter that can both accept arguments in the constructor AND use DI
 
 What I am not happy about:
 - it looks clumsy with all those projects but maybe that's okay

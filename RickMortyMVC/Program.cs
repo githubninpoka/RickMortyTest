@@ -28,6 +28,7 @@ namespace RickMortyMVC
                 options.AddPolicy("Expire300", builder =>
                 {
                     builder.Expire(TimeSpan.FromSeconds(300));
+                    builder.SetLocking(true);
                     builder.Tag("TagHandleForExpire300Policy");
                 });
             });
