@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{206C
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RickMorty.Tests", "RickMorty.Tests\RickMorty.Tests.csproj", "{DA893576-144B-4D72-A1CE-DCD80777C8B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{FE520E9F-5A70-4416-9489-2B72D3E546DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE520E9F-5A70-4416-9489-2B72D3E546DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE520E9F-5A70-4416-9489-2B72D3E546DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA893576-144B-4D72-A1CE-DCD80777C8B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA893576-144B-4D72-A1CE-DCD80777C8B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA893576-144B-4D72-A1CE-DCD80777C8B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA893576-144B-4D72-A1CE-DCD80777C8B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

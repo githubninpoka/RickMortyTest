@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RickMorty.Data;
 
@@ -11,9 +12,11 @@ using RickMorty.Data;
 namespace RickMorty.Data.Migrations
 {
     [DbContext(typeof(RickMortyDbContext))]
-    partial class RickMortyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241102050743_MakeExternalIdOptional")]
+    partial class MakeExternalIdOptional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

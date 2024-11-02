@@ -19,7 +19,7 @@ public class Character
     public string Origin { get; set; }
     public string Location { get; set; }
 
-    public int ExternalId { get; set; }
+    public int? ExternalId { get; set; }
     public DateTime externalCreated { get; set; }
 
 

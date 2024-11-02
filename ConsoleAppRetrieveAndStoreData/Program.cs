@@ -8,10 +8,10 @@ using RickMorty.Data;
 
 namespace RickMorty.ConsoleAppRetrieveAndStoreData;
 
-internal class Program
+public class Program
 {
 
-    static async Task Main(string[] args)
+    static async Task Main()
     {
 
         IWebApiReader webApiReader = new WebApiReader();
@@ -20,7 +20,7 @@ internal class Program
 
         using RickMortyDbContext db = new RickMortyDbContext();
         
-        var chars = db.Characters;
+        var characters = db.Characters;
 
         IEnumerable<CharacterDTO> aliveCharacterDTOs = aliveCharacterDTOsTask.Result; // this is a blocking operation, which is ok here.
 
@@ -29,7 +29,7 @@ internal class Program
         if (characterList.Count != 0)
         {
             //db.Database.ExecuteSqlRaw("TRUNCATE TABLE[Characters]");
-            db.Characters.RemoveRange(chars);
+            db.Characters.RemoveRange(characters);
             db.SaveChanges();
             await db.AddRangeAsync(characterList); // i know it's not useful to do async here.
             db.SaveChanges();
@@ -39,7 +39,7 @@ internal class Program
         Console.ReadLine();
     }
 
-    private static List<Character> CreateCharacters(IEnumerable<CharacterDTO> aliveCharacterDTOs)
+    public static List<Character> CreateCharacters(IEnumerable<CharacterDTO> aliveCharacterDTOs)
     {
         // the structure to get this working with different projects is:
         // Program references both data project and external data project
