@@ -11,7 +11,7 @@ namespace RickMortyMVC
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            // Marco addition 1 to program
+            // Marco addition 1 to program. having an interface here was not necessary for the required unit test
             builder.Services.AddDbContext<RickMortyDbContext>();
             // Marco addition output caching to program
             builder.Services.AddOutputCache(options =>
@@ -30,6 +30,13 @@ namespace RickMortyMVC
                     builder.Expire(TimeSpan.FromSeconds(300));
                     builder.SetLocking(true);
                     builder.Tag("TagHandleForExpire300Policy");
+                });
+                options.AddPolicy("Expire300ByQuery", builder =>
+                {
+                    builder.Expire(TimeSpan.FromSeconds(300));
+                    builder.SetLocking(true);
+                    builder.Tag("TagHandleForExpire300ByQueryPolicy");
+                    builder.SetVaryByQuery("id");
                 });
             });
             //builder.Services.AddResponseCaching();

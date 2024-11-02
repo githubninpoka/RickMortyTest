@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.OutputCaching;
 
 namespace RickMortyMVC.Filters;
 
-public class CreatePostInvalidateIndexCacheFilterAttribute : ActionFilterAttribute
+public class InvalidateCacheFilterAttribute : ActionFilterAttribute
 {
     private readonly IOutputCacheStore _outputCacheStore;
 
-    public CreatePostInvalidateIndexCacheFilterAttribute(IOutputCacheStore outputCacheStore)
+    public InvalidateCacheFilterAttribute(IOutputCacheStore outputCacheStore)
     {
         this._outputCacheStore = outputCacheStore;
     }
@@ -19,5 +19,6 @@ public class CreatePostInvalidateIndexCacheFilterAttribute : ActionFilterAttribu
     public override void OnActionExecuting(ActionExecutingContext context)
     {
         _outputCacheStore.EvictByTagAsync("TagHandleForExpire300Policy", new CancellationToken());
+        _outputCacheStore.EvictByTagAsync("TagHandleForExpire300ByQueryPolicy", new CancellationToken());
     }
 }

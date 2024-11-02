@@ -32,19 +32,19 @@ namespace RickMortyMVC.Controllers
         [OutputCache(PolicyName = "Expire300")]
         //[TypeFilter(typeof(IndexResourceFilterAttribute))] // this filter is ran before the action filters and after the response filters
         //[IndexPreActionFilter("from-database", "false")] // this is ran just around the action itself.
-        [IndexResponseFilter("from-database", "true")]
+        [HttpHeaderResponseFilter("from-database", "true")]
         public async Task<IActionResult> Index()
         {
-            var etag = $"\"{Guid.NewGuid():n}\"";
-            HttpContext.Response.Headers.ETag = etag; // this sends the client a HTTP 304
             return View(await _context.Characters.OrderByDescending(x => x.Id).ToListAsync());
         }
 
         // Marco GET: Characters/Location/Earth
         //[ResponseCache(Duration = 30, Location = ResponseCacheLocation.Client, NoStore = false)]
+        [OutputCache(PolicyName = "Expire300ByQuery")]
+        [HttpHeaderResponseFilter("from-database", "true")]
         public async Task<IActionResult> Planet(string? id)
         {
-            // here I would probably ask someone if this is safe url wise
+            // here I would probably verify with someone if this is safe url wise
             // I see that the query is using parameters, so it's probably safe
             return View(await _context.Characters.Where(c => c.Origin == id).ToListAsync());
         }
@@ -78,7 +78,7 @@ namespace RickMortyMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [TypeFilter(typeof(CreatePostInvalidateIndexCacheFilterAttribute))]
+        [TypeFilter(typeof(InvalidateCacheFilterAttribute))]
         public async Task<IActionResult> Create([Bind("Id,Created,Name,Status,Species,Origin,Location,ExternalId,externalCreated")] Character character)
         {
             if (ModelState.IsValid)
@@ -86,7 +86,7 @@ namespace RickMortyMVC.Controllers
                 _context.Add(character);
                 await _context.SaveChangesAsync();
 
-                //await _outputCacheStore.EvictByTagAsync("TagHandleForExpire300Policy", new CancellationToken()); // I left this here, but moved it to a filter.
+                //await _outputCacheStore.EvictByTagAsync("TagHandleForExpire300Policy", new CancellationToken()); // I left this here, but moved it to a filter. to stay in line with what I think is MS' directive on using MVC
 
                 return RedirectToAction(nameof(Index));
             }
@@ -114,6 +114,9 @@ namespace RickMortyMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
+        // I should possibly also added some guard rails here, like remove the externalid or only allow manually created characters to be edited
+        // I should also invalidate the caches after this action, but haven't for now.
         public async Task<IActionResult> Edit(int id, [Bind("Id,Created,Name,Status,Species,Origin,Location,ExternalId,externalCreated")] Character character)
         {
             if (id != character.Id)
@@ -165,7 +168,7 @@ namespace RickMortyMVC.Controllers
         // POST: Characters/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [TypeFilter(typeof(CreatePostInvalidateIndexCacheFilterAttribute))]
+        [TypeFilter(typeof(InvalidateCacheFilterAttribute))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var character = await _context.Characters.FindAsync(id);
