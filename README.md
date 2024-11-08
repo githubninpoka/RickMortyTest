@@ -16,7 +16,8 @@ Done:
 - for completeness' sake I added a tag for the OutputCache on the bonus planet view that is also evicted when creating/deleting a character manually
 - injecting a HTTP header from-database that is set when an action runs
 - i used filters to keep MVC mostly for what it's for: UI
-- added a single unit test that does precisely what the exercise asked to do
+- added a first unit test that does precisely what the exercise asked to do
+- added a second unit test that uses a mock web api to fetch some prepared data
 
 What I learnt:
 - projects cannot cyclically reference eachother (it needed to click in my head)
@@ -37,8 +38,8 @@ What I learnt:
 
 What I am not happy about:
 - it looks clumsy with all those projects but maybe that's okay
-- some methods need refactoring but since it's a learning project I left the clumsyness in.
-- i got most of the functionality up and running but most of the code isn't really safe yet. it needs try/catch etc.
+- some methods need refactoring but since it's a test project I left the clumsyness in.
+- i got the functionality up and running but most of the code isn't really safe yet. it needs try/catch etc.
 - i'm not keen on the way i've added the dbcontext without an interface, but at least i could reuse it for both the console and the mvc app
 - i'm thinking it's probably better to have one http helper class and let that:
 	- fetch the external data

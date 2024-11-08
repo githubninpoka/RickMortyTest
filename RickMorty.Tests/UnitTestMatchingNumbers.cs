@@ -5,6 +5,7 @@ using MyWebApiNamespace;
 using RickMorty.ExternalData.DTOs;
 using RickMorty.Domain.Models;
 using RickMorty.ConsoleAppRetrieveAndStoreData;
+using RickMorty.Tests.Mocks;
 
 public class Tests
 {
@@ -14,6 +15,10 @@ public class Tests
     // why?
     // the developer exercise now asks to 'empty' the database through the console app
     // but in a more realistic scenario we would possibly leave the manual entries alone when deleting data, depending on business logic.
+    
+    // I've added two tests:
+    // 1. with actual API outside world access
+    // 2. with a mock that should result in 8 alive characters
 
     [SetUp]
     public void Setup()
@@ -47,5 +52,33 @@ public class Tests
         // Assert
         Assert.True(amountInDatabaseAfterLoadingFromExternalApi == amountExpectedToBeStoredInDatabase);
         
+    }
+
+    [TestCase(8)]
+    public void WhenMockingDataAndFillingTheDatabaseFetchingFromDatabaseShallGiveSameNumberOfEntities(int numberExpected)
+    {
+        // Arrange
+        using RickMortyDbContext db = new RickMortyDbContext();
+        var characters = db.Characters;
+        IWebApiReader webApiReader = new MockWebApiReader();
+        RickMortyData rickmortyData = new RickMortyData(webApiReader);
+        IEnumerable<CharacterDTO> aliveCharacterDtos = rickmortyData.CreateFullRickMortyCharacterDataAsync().Result;
+        List<Character> characterList = RickMorty.ConsoleAppRetrieveAndStoreData.Program.CreateCharacters(aliveCharacterDtos);
+
+        if (characterList.Count != 0)
+        {
+            db.Characters.RemoveRange(characters);
+            db.SaveChanges();
+            db.AddRange(characterList);
+            db.SaveChanges();
+        }
+
+        // Act
+        var amountInDatabaseAfterLoadingFromExternalApi = db.Characters.Where(x => x.ExternalId != null).Count();
+        Console.WriteLine(amountInDatabaseAfterLoadingFromExternalApi);
+
+        // Assert
+        Assert.True(amountInDatabaseAfterLoadingFromExternalApi == numberExpected);
+
     }
 }
